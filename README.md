@@ -1,49 +1,65 @@
 # crouton: Chromium OS Universal Chroot Environment
 
 crouton is a set of scripts that bundle up into an easy-to-use,
-Chromium OS-centric chroot generator. Currently Ubuntu and Debian are
-supported (using debootstrap behind the scenes), but "Chromium OS Debian,
-Ubuntu, and Probably Other Distros Eventually Chroot Environment" doesn't
-acronymize as well (crodupodece is admittedly pretty fun to say, though).
+Chromium OS-centric chroot generator. Ubuntu, Debian, and Kali are supported
+(using debootstrap behind the scenes), but "Chromium OS Debian and Ubuntu (plus
+one distro) EOL'd Chroot Environment" doesn't acronymize as well (crodupodece is
+admittedly pretty fun to say, though).
 
-### crouton is now maintenance-only
+### 🪦 crouton is now end-of-life 🪦
 
-This means that:
- * Only bugfix and release list PRs will be accepted.
- * New distro releases will be added to the list as unsupported.
- * As xenial is EOL, crouton will (at some point) no longer have a default
-   release. You will always have to specify `-r`.
- * Bugs without updates in the past year will be bulk-closed with a "stale" tag.
- * Open PRs will be left open but have the "stale" tag added. If anyone who
-   forks crouton wants to pick up the feature work, they can build right off of
-   those PRs.
+All good things must come to an end, and considering
+ * Chromium OS's introduction of increasingly strict shell safeguards,
+ * the [change in cras's build tools](https://github.com/dnschneid/crouton/issues/4958),
+ * the [removal of manifest v2 extensions](https://github.com/dnschneid/crouton/pull/5094),
+ * the [removal of PNaCl, breaking xiwi](https://github.com/dnschneid/crouton/issues/5130),
+ * oh, and Chromium OS being replaced by Android
+
+there's really not much to gain from continued development. Put another way, the
+proverbial mixed salad is just about out of tasty crunchy bits, and the
+remaining morsels have gone a bit stale. And for some reason someone's about to
+swap all the lettuce out for onion rings? Point is, it's time to stop mixing
+dressings. Unless it's ranch, I guess, since that goes with just about anything.
+But this is crouton, not some Ready-for-Android Native Chroot Host, alas.
+
+Anyway, this means that:
+ * The repo is now locked, and no further changes will be considered.
+ * Eventually someone will want the latest Ubuntu added to the release list. See
+   [this commit](https://github.com/dnschneid/crouton/commit/6d80f57b91c39d10b29fde861aac5a2b5b9b3910)
+   for an example of how to do it on your own copy.
+ * Sometime around July 2025, the GitHub project will be archived, making the
+   issue tracker, discussions, and wiki read-only.
  * For the safety of users and stability of crouton's functionality for those on
-   EOL devices, offers to take over the dnschneid/crouton repo or Chrome
-   extension will be declined, and requests to change the goo.gl/fd3zc or
-   goo.gl/OVQOEt destinations will be rejected. If you would like to continue
-   feature work on crouton, fork it, do a good job of it, and people can choose
-   to use it at their own risk.
+   EOL devices, offers to take over the dnschneid/crouton repo or extension will
+   be declined, and requests to change link destinations will be rejected.
 
-## But first...
+If you have an EOL device, though, crouton is still a great match for you!
+ * Chromium OS version 110 and earlier, everything should work! Breathe new life
+   into your old devices!!
+ * Starting 111, crouton can't compile cras, so audio devices cannot be shared
+   with Chromium OS
+ * Starting 117, sudo in crosh is disabled and you'll need to use VT-2
+ * Starting 133 (139 for enterprise devices), manifest v2 is disabled and you
+   won't be able to run the extension (easy switching, clipboard sync, xiwi)
+ * Also starting 133 (139 for enterprise devices), pnacl is disabled, so even if
+   you somehow got the extension working, xiwi won't function
+ * Beyond that, it's anybody's guess as to what will break
+
+## Moving right along...
 
 :warning: **Steps to install crouton have changed!**  :warning:
 
-Due to improved security within Chromium OS ([yay!](https://chromium.googlesource.com/chromiumos/docs/+/HEAD/security/noexec_shell_scripts.md)),
-the steps needed to launch the crouton installer, and the steps to run crouton
-from SD cards have to change a little.
+Chromium OS has introduced several security features over the years that impede
+the installation and usage of crouton. If your device is no longer receiving
+updates, the steps below will likely work for you. However, if you are still
+having trouble, please try the [community-maintained instructions](https://github.com/dnschneid/crouton/wiki/Updated-Installation-Instructions-for-Crouton).
 
-Please read the relevant sections of this README carefully, and reach out to
-your favorite weblogger/tutorialer/videotuber to update their guides if they're
-behind the times. If you're successful, brag about your accomplishments in [the
-issue tracker](https://github.com/dnschneid/crouton/issues/4026) and earn the
-personal gratitude of the crouton authors\*!
-
-<sup>\* limit one (1) gratitude per commenter</sup>
-
-*WHOA*
-
-Ok, back to business.
-
+In addition, goo.gl is going away! That means the goo.gl/fd3zc you know and love
+has been replaced with [git.io/JZEs0](https://git.io/JZEs0). That's a zero at
+the end, if you were wondering. Both just point to
+[github](https://raw.githubusercontent.com/dnschneid/crouton/master/installer/crouton),
+so you can always just memorize the full link instead, which (fun fact) does not
+include any numbers at all!
 
 ## "crouton"...an acronym?
 
@@ -116,7 +132,7 @@ insecure*, so don't expect a password in your chroot to keep anyone from your
 data. crouton does support encrypting chroots, but the encryption is only as
 strong as the quality of your passphrase. Consider this your warning.
 
-It's also highly recommended that you install the [crouton extension](https://goo.gl/OVQOEt),
+It's also highly recommended that you install the [crouton extension](https://chromewebstore.google.com/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom),
 which, when combined with the `extension` or `xiwi` targets, provides much 
 improved integration with Chromium OS.
 
@@ -129,10 +145,10 @@ crouton is a powerful tool, and there are a *lot* of features, but basic usage
 is as simple as possible by design.
 
 If you're just here to use crouton, you can grab the latest release from
-[https://goo.gl/fd3zc](https://goo.gl/fd3zc). Download it, pop open a shell
-(Ctrl+Alt+T, type `shell` and hit enter), make the installer executable with
-`sudo install -Dt /usr/local/bin -m 755 ~/Downloads/crouton`, then launch it
-with `sudo crouton` to see the help text. See the "examples" section for some
+[https://git.io/JZEs0](https://git.io/JZEs0). Download it, pop open a
+shell (Ctrl+Alt+T, type `shell` and hit enter), make the installer executable
+with `sudo install -Dt /usr/local/bin -m 755 ~/Downloads/crouton`, then launch
+it with `sudo crouton` to see the help text. See the "examples" section for some
 usage examples.
 
 If you're modifying crouton, you'll probably want to clone or download the repo
@@ -190,7 +206,8 @@ start\* commands. Ta-da! That was easy.
 
 ### Wasteful redundancies are wasteful: one clipboard, one browser, one window
 
-  1. Install the [crouton extension](https://goo.gl/OVQOEt) into Chromium OS.
+  1. Install the [crouton extension](https://chromewebstore.google.com/detail/crouton-integration/gcpneefbbnfalgjniomfjknbcgkbijom)
+     into Chromium OS.
   2. Add the `extension` or `xiwi` version to your chroot.
   3. Try some copy-pasta, or uninstall all your web browsers from the chroot.
 
@@ -204,8 +221,8 @@ graphical sessions as Chromium OS windows.*
      command-line tools using `-t core` or `-t cli-extra`
   2. Enter the chroot in as many crosh shells as you want simultaneously using
      `sudo enter-chroot`
-  3. Use the [Crosh Window](https://goo.gl/eczLT) extension to keep Chromium OS
-     from eating standard keyboard shortcuts.
+  3. Use the [Crosh Window](https://chromewebstore.google.com/detail/crosh-window/nhbmpbdladcchdhkemlojfjdknjadhmh)
+     extension to keep Chromium OS from eating standard keyboard shortcuts.
   4. If you installed cli-extra, `startcli` will launch a new VT right into the
      chroot.
 
@@ -262,7 +279,7 @@ graphical sessions as Chromium OS windows.*
 
 *If for some reason you have to run the installer without touching the local
 disk, you can (for the time being) run
-`curl -fL https://goo.gl/fd3zc | sudo sh -s -- options_for_crouton_installer`.
+`curl -fL https://git.io/JZEs0 | sudo sh -s -- options_for_crouton_installer`.
 Note that this will definitely break in the near future, so don't depend on it.*
 
 ### Downloading bootstrap files over and over again is a waste of time
@@ -316,7 +333,7 @@ have to determine and download the bootstrap files every time.*
     `croutonpowerd -i command and arguments` will automatically stop inhibiting
     power management when the command exits.
   * Have a Pixel or two or 4.352 million? `-t touch` improves touch support.
-  * Want to share some files and/or folders between ChromeOS and your chroot?  
+  * Want to share some files and/or folders between Chromium OS and your chroot?
     Check out the `/etc/crouton/shares` file, or read all about it in the wiki.
   * Want more tips? Check the [wiki](https://github.com/dnschneid/crouton/wiki).
 

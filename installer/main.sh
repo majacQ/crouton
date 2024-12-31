@@ -148,7 +148,8 @@ elif ! awk -F= '/_RELEASE_BUILD_NUMBER=/ { exit int($2) < '"${CROS_MIN_VERS:-0}"
 If there are updates pending, please reboot and try again.
 Otherwise, you may not be getting automatic updates, in which case you should
 post your update_engine.log from chrome://system to http://crbug.com/new and
-restore your device using a recovery USB: https://goo.gl/AZ74hj"
+restore your device using a recovery USB:
+  https://support.google.com/chromebook/answer/1080595"
 fi
 
 # If the release is "list" or "help", print out all the valid releases.
@@ -528,25 +529,19 @@ You also have to specify a mirror to crouton (-m) for installation to proceed."
         echo "\
 You have specified a mirror, so installation will proceed anyway.
 You will almost certainly run into issues, but some features may still work.
-Press Ctrl-C to abort; installation will continue in 30 seconds." 1>&2
+Press Ctrl-C to abort; installation will continue in 5 seconds." 1>&2
     else
         echo "\
 That means you may have issues updating now or in the future.
 You should upgrade your chroot to a supported version as soon as possible.
-Refer to https://goo.gl/Z5LGVD for upgrade instructions.
-Press Ctrl-C to abort; normal update will continue in 30 seconds." 1>&2
+Refer to the wiki for upgrade instructions:
+  https://github.com/dnschneid/crouton/wiki/Upgrade-chroot-release
+Press Ctrl-C to abort; normal update will continue in 5 seconds." 1>&2
     fi
-    sleep 30
+    sleep 5
 elif [ "${releaseline%"*"}" != "$releaseline" ]; then
     echo_color r "WARNING: $RELEASE is an unsupported release." "
 You will likely run into issues, but things may work with some effort." 1>&2
-
-    if [ -z "$UPDATE" ]; then
-        echo "Press Ctrl-C to abort; installation will continue in 5 seconds." 1>&2
-    else
-        echo "Press Ctrl-C to abort; update will continue in 5 seconds." 1>&2
-    fi
-    sleep 5
 fi
 
 # Checks if it's safe to enable boot signing verification.
